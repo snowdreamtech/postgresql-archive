@@ -3,7 +3,7 @@ name: GitHub Actions Continuous Delivery
 on:
   push:
     branches:
-      - entrypoint  
+      - main  
     tags:
       - '*'
   workflow_dispatch:
@@ -65,12 +65,15 @@ jobs:
             platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/riscv64,linux/s390x
             push: true
             tags: |
-              snowdreamtech/alpine:entrypoint-latest
-              snowdreamtech/alpine:entrypoint-3.20.2
-              snowdreamtech/alpine:entrypoint-3.20
-              snowdreamtech/alpine:entrypoint-3
-              ghcr.io/snowdreamtech/alpine:entrypoint-latest
-              ghcr.io/snowdreamtech/alpine:entrypoint-3.20.2
-              ghcr.io/snowdreamtech/alpine:entrypoint-3.20
-              ghcr.io/snowdreamtech/alpine:entrypoint-3
-             
+              snowdreamtech/postgresql:latest
+              snowdreamtech/postgresql:14.12
+              snowdreamtech/postgresql:14
+              ghcr.io/snowdreamtech/postgresql:latest
+              ghcr.io/snowdreamtech/postgresql:14.12
+              ghcr.io/snowdreamtech/postgresql:14
+              snowdreamtech/postgres:latest
+              snowdreamtech/postgres:14.12
+              snowdreamtech/postgres:14
+              ghcr.io/snowdreamtech/postgres:latest
+              ghcr.io/snowdreamtech/postgres:14.12
+              ghcr.io/snowdreamtech/postgres:14

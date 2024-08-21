@@ -1,18 +1,16 @@
-FROM alpine:3.20.2
+FROM snowdreamtech/alpine:3.20.2
 
 LABEL maintainer="snowdream <sn0wdr1am@qq.com>"
 
-RUN echo "@main https://dl-cdn.alpinelinux.org/alpine/edge/main" | tee -a /etc/apk/repositories \
-    && echo "@community https://dl-cdn.alpinelinux.org/alpine/edge/community" | tee -a /etc/apk/repositories \
-    && echo "@testing https://dl-cdn.alpinelinux.org/alpine/edge/testing" | tee -a /etc/apk/repositories \
-    && apk add --no-cache musl-locales \
-    musl-locales-lang \
-    tzdata \
-    openssl \
-    wget \
-    ca-certificates \                                                                                                                                                                                                      
-    && update-ca-certificates
+# keep the docker container running
+ENV KEEPALIVE=1
 
-COPY docker-entrypoint.sh /usr/local/bin/
+ENV POSTGRESQL_VERSION=14.12-r0
+
+RUN apk add --no-cache postgresql14=${POSTGRESQL_VERSION}  \
+    postgresql14-client=${POSTGRESQL_VERSION} \
+    postgresql14-contrib=${POSTGRESQL_VERSION} 
+    
+COPY --chown=postgres:postgres docker-entrypoint.sh /usr/local/bin/
 
 ENTRYPOINT ["docker-entrypoint.sh"]
