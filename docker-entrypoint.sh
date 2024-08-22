@@ -4,7 +4,7 @@ set -e
 
 pg_version=$(pg_versions get-default)
 name="PostgreSQL $pg_version"
-description="PostgreSQL server"
+description="PostgreSQL $pg_version server"
 user="postgres"
 group="postgres"
 auto_setup="yes"
@@ -169,9 +169,52 @@ psql_command() {
 	su $user -c "psql --no-psqlrc --no-align --tuples-only -q -c \"$1\""
 }
 
-
 # postgres
 start_pre
+
+POSTGRES_CONFIG_PATH="/etc/postgresql$pg_version"
+POSTGRES_DATABASE_CONFIG_PATH="${POSTGRES_CONFIG_PATH}/postgresql.conf"
+POSTGRES_HBA_CONFIG_PATH="${POSTGRES_CONFIG_PATH}/pg_hba.conf"
+
+# openssl rand -base64 33
+if [ -z "${POSTGRES_ROOT_PASSWORD}" ]; then {
+    POSTGRES_ROOT_PASSWORD=$(openssl rand -base64 33)
+    echo " Generate Random postgres root password:${POSTGRES_ROOT_PASSWORD}"
+}
+fi
+
+# Modifying configuration file postgresql.conf
+# https://wiki.alpinelinux.org/wiki/Postgresql
+# https://wiki.alpinelinux.org/wiki/Postgresql_16
+if [ "${POSTGRES_DISALLOW_USER_LOGIN_REMOTELY}" -eq 0 ]; then {
+	sed -i "s|\#*listen_addresses\s*=\s*'localhost'|listen_addresses = '*'|g" ${POSTGRES_DATABASE_CONFIG_PATH}
+}
+fi
+
+if [ "${POSTGRES_PORT}" -gt 0 ]; then {
+	sed -i "s|\#*port\s*=\s*[0-9]+|port = ${POSTGRES_PORT}|g" ${POSTGRES_DATABASE_CONFIG_PATH}
+}
+fi
+
+if [ -n "${POSTGRES_HOST_AUTH_METHOD}" ] && [ "${POSTGRES_HOST_AUTH_METHOD}" != "trust" ] ; then {
+	sed -i "s|\#*password_encryption\s*=\s*scram-sha-256\|md5\|password|password_encryption = ${POSTGRES_HOST_AUTH_METHOD}|g" ${POSTGRES_DATABASE_CONFIG_PATH}
+}
+fi
+
+if [ "${POSTGRES_MAX_CONNECTIONS}" -gt 0 ]; then {
+	sed -i "s|\#*max_connections\s*=\s*[0-9]+|max_connections = ${POSTGRES_MAX_CONNECTIONS}|g" ${POSTGRES_DATABASE_CONFIG_PATH}
+}
+fi
+
+# Modifying configuration file pg_hba.conf
+# https://wiki.alpinelinux.org/wiki/Postgresql_16
+if [ "${POSTGRES_DISALLOW_USER_LOGIN_REMOTELY}" -eq 0 ]; then {
+	sed -i "/^host  all  all 0.0.0.0/0 ${POSTGRES_HOST_AUTH_METHOD}/d" "${POSTGRES_HBA_CONFIG_PATH}"
+	echo "host  all  all 0.0.0.0/0 ${POSTGRES_HOST_AUTH_METHOD}" >> "${POSTGRES_HBA_CONFIG_PATH}"
+}
+fi
+
+# postgres
 start
 
 # exec commands
