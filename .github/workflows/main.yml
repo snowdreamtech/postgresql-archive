@@ -65,15 +65,11 @@ jobs:
             platforms: linux/386,linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64,linux/ppc64le,linux/s390x
             push: true
             tags: |
-              snowdreamtech/postgresql:latest
               snowdreamtech/postgresql:14.12
               snowdreamtech/postgresql:14
-              ghcr.io/snowdreamtech/postgresql:latest
               ghcr.io/snowdreamtech/postgresql:14.12
               ghcr.io/snowdreamtech/postgresql:14
-              snowdreamtech/postgres:latest
               snowdreamtech/postgres:14.12
               snowdreamtech/postgres:14
-              ghcr.io/snowdreamtech/postgres:latest
               ghcr.io/snowdreamtech/postgres:14.12
               ghcr.io/snowdreamtech/postgres:14
