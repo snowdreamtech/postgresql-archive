@@ -128,6 +128,25 @@ stop_force() {
 	_stop    force "immediate shutdown"
 }
 
+reload() {
+	echo "Reloading $name configuration"
+
+	su $user -c \
+		"/usr/bin/pg_ctl \
+		-- reload \
+			--pgdata=$conf_dir \
+			-o '--data-directory=$data_dir $pg_opts'"
+
+	if [ $? -ne 0 ]; then
+		echo "Failed to reload $name"
+		echo "Check the log for a possible explanation of the above error:"
+		echo "    $logfile"
+		return 1
+	else 
+		echo "$name has been reloaded."
+	fi
+}
+
 setup() {
 	local bkpdir
 
