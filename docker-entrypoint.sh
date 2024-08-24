@@ -16,8 +16,6 @@ logfile="/var/log/postgresql/postmaster.log"
 port=5432
 pg_opts=
 
-command="/usr/libexec/postgresql$pg_version/postgres"
-
 conffile="$conf_dir/postgresql.conf"
 pidfile="$data_dir/postmaster.pid"
 start_stop_daemon_args=""
@@ -86,7 +84,6 @@ start() {
 			-o '--data-directory=$data_dir $pg_opts'"
 
 	if [ $? -eq 0 ]; then
-		echo "command" "$command"
 		echo "pidfile" "$pidfile"
 	else
 		echo "Failed to start $name"
