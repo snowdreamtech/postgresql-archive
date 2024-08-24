@@ -16,6 +16,8 @@ To help you get started creating a container from this image you can either use 
 docker run -d \
   --name=postgresql \
   -e TZ=Asia/Shanghai \
+  -e POSTGRES_DISALLOW_USER_LOGIN_REMOTELY=0 \
+  -p 5432:5432 \
   --restart unless-stopped \
   snowdreamtech/postgresql:latest
 ```
@@ -26,7 +28,15 @@ docker run -d \
 docker run -d \
   --name=postgresql \
   -e TZ=Asia/Shanghai \
-  -v /path/to/data:/path/to/data \
+  -e POSTGRES_ROOT_PASSWORD='root password' \
+  -e POSTGRES_PORT=5432 \
+  -e POSTGRES_USER='user name' \
+  -e POSTGRES_PASSWORD='user password' \
+  -e POSTGRES_DB='db name' \
+  -e POSTGRES_DISALLOW_USER_LOGIN_REMOTELY=0 \
+  -e POSTGRES_MAX_CONNECTIONS=500 \
+  -p 5432:5432 \
+  -v /path/to/data:/var/lib/postgresql/14(pg-version)/data \
   --restart unless-stopped \
   snowdreamtech/postgresql:latest
 ```
@@ -44,6 +54,9 @@ services:
     container_name: postgresql
     environment:
       - TZ=Asia/Shanghai
+      - POSTGRES_DISALLOW_USER_LOGIN_REMOTELY=0
+    ports:
+      - 5432:5432  
     restart: unless-stopped
 ```
 
@@ -58,8 +71,17 @@ services:
     container_name: postgresql
     environment:
       - TZ=Asia/Shanghai
+      - POSTGRES_ROOT_PASSWORD='root password'
+      - POSTGRES_PORT=5432
+      - POSTGRES_USER='user name'
+      - POSTGRES_PASSWORD='user password'
+      - POSTGRES_DB='db name'
+      - POSTGRES_DISALLOW_USER_LOGIN_REMOTELY=0
+      - POSTGRES_MAX_CONNECTIONS=500
     volumes:
-      - /path/to/data:/path/to/data
+      - /path/to/data:/var/lib/postgresql/14(pg-version)/data
+    ports:
+      - 5432:5432   
     restart: unless-stopped
 ```
 
