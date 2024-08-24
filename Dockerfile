@@ -5,7 +5,7 @@ LABEL maintainer="snowdream <sn0wdr1am@qq.com>"
 # keep the docker container running
 ENV KEEPALIVE=1
 
-ENV POSTGRES_VERSION=14.12-r0 \
+ENV POSTGRES_VERSION=15.7-r0 \
     POSTGRES_PORT=5432 \
     POSTGRES_MAX_CONNECTIONS=100 \
     POSTGRES_ROOT_PASSWORD="" \
@@ -15,9 +15,9 @@ ENV POSTGRES_VERSION=14.12-r0 \
     POSTGRES_HOST_AUTH_METHOD='scram-sha-256'  \
     POSTGRES_DISALLOW_USER_LOGIN_REMOTELY=1
 
-RUN apk add --no-cache postgresql14=${POSTGRES_VERSION}  \
-    postgresql14-client=${POSTGRES_VERSION} \
-    postgresql14-contrib=${POSTGRES_VERSION} 
+RUN apk add --no-cache postgresql15=${POSTGRES_VERSION}  \
+    postgresql15-client=${POSTGRES_VERSION} \
+    postgresql15-contrib=${POSTGRES_VERSION} 
 
 COPY --chown=postgres:postgres docker-entrypoint.sh /usr/local/bin/
 

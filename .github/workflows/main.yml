@@ -3,7 +3,7 @@ name: GitHub Actions Continuous Delivery
 on:
   push:
     branches:
-      - main  
+      - 15  
     tags:
       - '*'
   workflow_dispatch:
@@ -66,14 +66,14 @@ jobs:
             push: true
             tags: |
               snowdreamtech/postgresql:latest
-              snowdreamtech/postgresql:14.12
-              snowdreamtech/postgresql:14
+              snowdreamtech/postgresql:15.7
+              snowdreamtech/postgresql:15
               ghcr.io/snowdreamtech/postgresql:latest
-              ghcr.io/snowdreamtech/postgresql:14.12
-              ghcr.io/snowdreamtech/postgresql:14
+              ghcr.io/snowdreamtech/postgresql:15.7
+              ghcr.io/snowdreamtech/postgresql:15
               snowdreamtech/postgres:latest
-              snowdreamtech/postgres:14.12
-              snowdreamtech/postgres:14
+              snowdreamtech/postgres:15.7
+              snowdreamtech/postgres:15
               ghcr.io/snowdreamtech/postgres:latest
-              ghcr.io/snowdreamtech/postgres:14.12
-              ghcr.io/snowdreamtech/postgres:14
+              ghcr.io/snowdreamtech/postgres:15.7
+              ghcr.io/snowdreamtech/postgres:15
