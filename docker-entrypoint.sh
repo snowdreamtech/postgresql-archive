@@ -96,6 +96,38 @@ start() {
 	fi
 }
 
+_stop() {
+	echo "Stopping $name ($2)"
+
+	su $user -c \
+		"/usr/bin/pg_ctl \
+		-- stop \
+			--pgdata=$conf_dir \
+			-o '--data-directory=$data_dir $pg_opts' \
+			-m $1"
+
+	if [ $? -ne 0 ]; then
+		echo "Failed to stop $name ($2) "
+		echo "Check the log for a possible explanation of the above error:"
+		echo "    $logfile"
+		return 1
+	else 
+		echo "$name ($2) has been stopped."
+	fi
+}
+
+stop_smart() {
+	_stop smart "smart shutdown"
+}
+
+stop_fast() {
+	_stop fast "fast shutdown"
+}
+
+stop_force() {
+	_stop    force "immediate shutdown"
+}
+
 setup() {
 	local bkpdir
 
@@ -321,7 +353,7 @@ fi
 # keep the docker container running
 # https://github.com/docker/compose/issues/1926#issuecomment-422351028
 if [ "${KEEPALIVE}" -eq 1 ]; then
-	trap : TERM INT
+	trap stop_smart TERM INT
 	tail -f /dev/null &
 	wait
 	# sleep infinity & wait
