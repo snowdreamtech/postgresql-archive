@@ -3,7 +3,7 @@ name: GitHub Actions Continuous Delivery
 on:
   push:
     branches:
-      - main  
+      - 14  
     tags:
       - '*'
   workflow_dispatch:
