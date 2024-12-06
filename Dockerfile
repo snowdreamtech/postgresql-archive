@@ -5,7 +5,7 @@ LABEL maintainer="snowdream <sn0wdr1am@qq.com>"
 # keep the docker container running
 ENV KEEPALIVE=1
 
-ENV POSTGRES_VERSION=16.3-r0 \
+ENV POSTGRES_VERSION=16.6-r0 \
     POSTGRES_PORT=5432 \
     POSTGRES_MAX_CONNECTIONS=100 \
     POSTGRES_ROOT_PASSWORD="" \
