@@ -30,7 +30,7 @@ jobs:
           # Add support for more platforms with QEMU (optional)
           # https://github.com/docker/setup-qemu-action
           name: Set up QEMU
-          uses: docker/setup-qemu-action@v3.2.0
+          uses: docker/setup-qemu-action@v3.3.0
         -
           # https://github.com/docker/setup-buildx-action/issues/57#issuecomment-1059657292
           # https://github.com/docker/buildx/issues/136#issuecomment-550205439
@@ -58,7 +58,7 @@ jobs:
             password: ${{ secrets.GITHUB_TOKEN }}          
         -
           name: Build and push
-          uses: docker/build-push-action@v6.10.0
+          uses: docker/build-push-action@v6.11.0
           with:
             context: .
             build-args: |
